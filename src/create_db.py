@@ -20,11 +20,12 @@ conn.execute('''
                 (id INTEGER PRIMARY KEY,
                 name VARCHAR NOT NULL UNIQUE);''')
 
-conn.execute('''DROP TABLE IF EXISTS open;''')
+conn.execute('''DROP TABLE IF EXISTS price;''')
 conn.execute('''
-            CREATE TABLE open (
+            CREATE TABLE price (
                 id INTEGER PRIMARY KEY,
-                open DECIMAL NOT NULL,
+                open DECIMAL,
+                close  DECIMAL,
                 company_id VARCHAR,
                 date_id VARCHAR,
                 CONSTRAINT company_id
@@ -68,11 +69,10 @@ for company in companies:
     company_map[converted] = company[0]
 
 # OPEN TABLE
-open_table = df[['open', 'date', 'Name']]
+open_table = df[['open', 'close', 'date', 'Name']]
 open_table['date_id'] = open_table.date.apply(lambda x: date_map[x])
 open_table['company_id'] = open_table.Name.apply(lambda x: company_map[x])
 
-open_table[['open', 'date_id', 'company_id']]\
-    .dropna()\
-    .to_sql('open', conn, 
+open_table[['open', 'close', 'date_id', 'company_id']]\
+    .to_sql('price', conn, 
             index=False, if_exists='append')
