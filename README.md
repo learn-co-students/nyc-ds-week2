@@ -91,4 +91,11 @@ The documentation for this API can be found [here](https://date.nager.at/swagger
 
 ### Calculate the price change from opening to close
 
+
+```python
+# Your code here
+```
+
 ### Plot the top ten prices increases and decreases via subplots
+
+*Please create a code cell below to meet this task*
