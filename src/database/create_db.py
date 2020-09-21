@@ -1,25 +1,31 @@
 import pandas as pd
 import sqlite3
 import os
+import warnings
+warnings.filterwarnings("ignore")
 parent_directory = os.path.dirname(os.getcwd())
 
 
 # ========================== CREATE TABLES =========================
+print('Opening connection to database\n')
 db_path = os.path.join(parent_directory, 'data', 'stocks.db')
 conn = sqlite3.connect(db_path)
 
+print('Creating date table.\n')
 conn.execute('''DROP TABLE IF EXISTS date;''')
 conn.execute('''
             CREATE TABLE date 
                 (id INTEGER PRIMARY KEY,
                 date DATE NOT NULL);''')
 
+print('Creating company table.\n')
 conn.execute('''DROP TABLE IF EXISTS company;''')
 conn.execute('''
             CREATE TABLE company 
                 (id INTEGER PRIMARY KEY,
                 name VARCHAR NOT NULL UNIQUE);''')
 
+print('Creating price table.\n')
 conn.execute('''DROP TABLE IF EXISTS price;''')
 conn.execute('''
             CREATE TABLE price (
@@ -36,6 +42,8 @@ conn.execute('''
                     REFERENCES date(id));''')
 
 # ========================== IMPORT DATASET =========================
+
+print('Loading data into SQL.\n')
 
 stocks_dataset_path = os.path.join(parent_directory,'data','all_stocks_5yr.csv')
 df = pd.read_csv(stocks_dataset_path)
